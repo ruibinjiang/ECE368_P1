@@ -1,3 +1,4 @@
+
 long *Load_File(char *Filename, int *Size){
 
 }
@@ -76,7 +77,7 @@ long * Gen_Seq2 (int N){
 }
 
 void Save_Seq1 (char *Filename, int N){
-    
+
 }
 void Save_Seq2 (char *Filename, int N){
 
