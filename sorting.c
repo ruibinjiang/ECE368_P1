@@ -41,17 +41,17 @@ int Save_File(char *Filename, long *Array, int Size){
 
 
 void Shell_Insertion_Sort(long *Array, int Size, double *N_Comp, double *N_Move){
-    int seq_size = 1;
+    int seq_size;
     long *sequence = malloc((sizeof(long)) * Size);
 
     sequence[0] = 1;
     int p2 = 0;
     int p3 = 0;
-    
-    int i;
+
+    int i = 1;
     long u2 = 0;
     long u3 = 0;
-    for (i=1;i<=Size;i++){
+    while (sequence[i-1]<Size){
         if (sequence[p2]*2 == sequence[i-1]){
             ++p2;
         }
@@ -68,25 +68,26 @@ void Shell_Insertion_Sort(long *Array, int Size, double *N_Comp, double *N_Move)
             ++p3;
             sequence[i]=u3;
         }
-        seq_size++;
+        i++;
     }
 
-
+    seq_size=i-1;
 
 
 
     long temp_r = 0;
-    long current_k = 0;
-    long i = 0;
-
-    for (int k = (seq_size - 1); k >= 0; --k) //for each k (in descending order)
+    int current_k = 0;
+    int k;
+    int j;
+    for (k = (seq_size - 1); k >= 0; --k) //for each k (in descending order)
     {
         current_k = sequence[k];
-        for (int j = current_k; j <= (Size - 1); ++j) //for j ← k to n-1
+        for (j = current_k; j <= (Size - 1); ++j) //for j ← k to n-1
         {
         temp_r = Array[j];
         i = j;
-        ++(*N_Comp);
+        ++(*N_Move);
+        //++(*N_Comp);
         while((i>=current_k) && (Array[i - current_k] > temp_r))
         {
             Array[i] = Array[i - current_k];
@@ -105,29 +106,37 @@ void Shell_Insertion_Sort(long *Array, int Size, double *N_Comp, double *N_Move)
 
 
 void Improved_Bubble_Sort(long *Array, int Size, double *N_Comp, double *N_Move){
-    int seq_size = 1;
-    long *sequence = Gen_Seq1(Size, &seq_size);
+    int seq_size;
+    long * sequence = malloc(sizeof(long)*Size);
+    int temp = Size;
+    int i = 0;
+    while (temp>1){
+        temp/=1.3;
+        if(temp == 9 || temp == 10){
+          temp = 11;}
+          sequence[i]=temp;
+        i++;
+    }
+    seq_size=i;
 
     long temp_r = 0;
     long current_k = 0;
-    long i = 0;
 
-    for (int k = (seq_size - 1); k >= 0; --k) //for each k (in descending order)
+
+    for (int k = 0; k < seq_size; k++) //for each k (in descending order)
     {
         current_k = sequence[k];
         for (int j = current_k; j <= (Size - 1); ++j) //for j ← k to n-1
         {
         i = j;
         ++(*N_Comp);
-            while(i>=current_k)
+            while((i>=current_k)&&(Array[i] < Array[i - current_k]))
             {
-                if(Array[i] < Array[i - current_k]){
                     temp_r = Array[i];
                     Array[i] = Array[i - current_k];
                     Array[i - current_k] = temp_r;
                     *N_Move+=3;
-                }
-                i = i - current_k;
+                    i = i - current_k;
                 ++(*N_Comp);
             }
         }
@@ -144,19 +153,6 @@ void Improved_Bubble_Sort(long *Array, int Size, double *N_Comp, double *N_Move)
 
 
 
-long * Gen_Seq2 (int N, int *seq_size){
-    long * seq2 = malloc(sizeof(long)*N);
-    int temp = N;
-    int i = 0;
-    while (temp!=1){
-        temp/=1.3;
-        seq2[i]=temp;
-        i++;
-        (*seq_size)=(*seq_size)+1;
-    }
-    return seq2;
-}
-
 void Save_Seq1 (char *Filename, int N){
     FILE *file_ptr = fopen(Filename, "w");
     int seq_size = 1;
@@ -165,11 +161,11 @@ void Save_Seq1 (char *Filename, int N){
     sequence[0] = 1;
     int p2 = 0;
     int p3 = 0;
-    
-    int i;
+
+    int i = 1;
     long u2 = 0;
     long u3 = 0;
-    for (i=1;i<=N;i++){
+    while (sequence[i-1]<N){
         if (sequence[p2]*2 == sequence[i-1]){
             ++p2;
         }
@@ -187,9 +183,10 @@ void Save_Seq1 (char *Filename, int N){
             sequence[i]=u3;
         }
         seq_size++;
+        i++;
     }
 
-    int i;
+    fprintf(file_ptr, "%d\n", N);
     for (i = 0;i<seq_size;i++){
         fprintf(file_ptr,"%ld\n", sequence[i]);
     }
@@ -199,14 +196,25 @@ void Save_Seq1 (char *Filename, int N){
 }
 void Save_Seq2 (char *Filename, int N){
     FILE *file_ptr = fopen(Filename, "w");
-    int seq_size = 0;
-    long *sequence = Gen_Seq2(N, &seq_size);
+    int seq_size;
+    long * sequence = malloc(sizeof(long)*N);
+    int temp = N;
+    int i = 0;
+    while (temp>1){
+        temp/=1.3;
+        if(temp == 9 || temp == 10){
+          temp = 11;}
+          sequence[i]=temp;
+        i++;
+    }
+    seq_size=i;
 
-    int i;
-    for (i = 0;i<seq_size;i++){
+    fprintf(file_ptr, "%d\n", N);
+
+    for (i = seq_size-1;i>=0;i--){
         fprintf(file_ptr,"%ld\n", sequence[i]);
     }
-
+    free(sequence);
     fclose(file_ptr);
     return;
 }
