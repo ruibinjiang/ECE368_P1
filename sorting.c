@@ -87,7 +87,7 @@ void Shell_Insertion_Sort(long *Array, int Size, double *N_Comp, double *N_Move)
         temp_r = Array[j];
         i = j;
         ++(*N_Move);
-        //++(*N_Comp);
+        ++(*N_Comp);
         while((i>=current_k) && (Array[i - current_k] > temp_r))
         {
             Array[i] = Array[i - current_k];
