@@ -121,12 +121,13 @@ void Improved_Bubble_Sort(long *Array, int Size, double *N_Comp, double *N_Move)
 
     long temp_r = 0;
     long current_k = 0;
+    int k;
+    int j;
 
-
-    for (int k = 0; k < seq_size; k++) //for each k (in descending order)
+    for (k = 0; k < seq_size; k++) //for each k (in descending order)
     {
         current_k = sequence[k];
-        for (int j = current_k; j <= (Size - 1); ++j) //for j ← k to n-1
+        for (j = current_k; j <= (Size - 1); ++j) //for j ← k to n-1
         {
         i = j;
         ++(*N_Comp);
